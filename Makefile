@@ -1,2 +1,2 @@
 main: main.c
-	gcc -o miniRT main.c -Imlx/src -Lmlx -lmlx -ldl -lGL -lm -lpthread -Wl,-rpath=./mlx
+	gcc -o miniRT main.c -Imlx/src -Lmlx -lmlx -Wl,-rpath=./mlx
