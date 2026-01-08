@@ -28,7 +28,7 @@ int main() {
         return 1;
     }
 
-    unsigned int red = 0;
+    unsigned int red = 255;
     unsigned int green = 0;
     unsigned int blue = 255;
     unsigned int alpha = 255;
@@ -38,13 +38,13 @@ int main() {
     struct img_data img;
     img.width = 720;
     img.height = 480;
-    img.color = color;
     img.img_ptr = mlx_new_image(mlx_ptr, img.width, img.height);
     img.img_addr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-    draw_circle(&img, 30, 30, 60);
-    draw_circle(&img, 100, 400, 300);
-    draw_rectangle(&img, 50, 20, 200, 150);
+    draw_circle(&img, 30, 30, 60, color);
+    draw_circle(&img, 100, 400, 300, color);
+    draw_rectangle(&img, 50, 20, 200, 150, color);
+    draw_triangle(&img, 10, 10, 50, 10, 10, 50, color);
 
     mlx_put_image_to_window(mlx_ptr, window, img.img_ptr, 0, 0);
 
