@@ -1,4 +1,6 @@
 #include "mlx.h"
+#include "shapes.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -26,28 +28,25 @@ int main() {
         return 1;
     }
 
-    unsigned int red = 255;
+    unsigned int red = 0;
     unsigned int green = 0;
     unsigned int blue = 255;
     unsigned int alpha = 255;
 
-    unsigned int color = (alpha << 24) | (blue << 16) | (green << 8) | red;
+    unsigned int color = (alpha << 24) | (red << 16) | (green << 8) | blue;
 
-    void *image = mlx_new_image(mlx_ptr, 100, 120);
-    mlx_put_image_to_window(mlx_ptr, window, image, 100, 150);
-    unsigned int bits_per_pixel;
-    unsigned int line_size;
-    unsigned int endian;
-    unsigned char *image_addr = mlx_get_data_addr(image, &bits_per_pixel, &line_size, &endian);
-    printf("bpp=%d line_len=%d endian=%d\n", bits_per_pixel, line_size, endian);
+    struct img_data img;
+    img.width = 720;
+    img.height = 480;
+    img.color = color;
+    img.img_ptr = mlx_new_image(mlx_ptr, img.width, img.height);
+    img.img_addr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_length, &img.endian);
 
+    draw_circle(&img, 30, 30, 60);
+    draw_circle(&img, 100, 400, 300);
+    draw_rectangle(&img, 50, 20, 200, 150);
 
-    for (int i = 0; i < 120; i++) {
-        for (int j = 0; j < 100; j++) {
-            char *pixel = image_addr + (i * line_size + j * (bits_per_pixel / 8));
-            *(unsigned int *)pixel = color;
-        }
-    }
+    mlx_put_image_to_window(mlx_ptr, window, img.img_ptr, 0, 0);
 
     mlx_key_hook(window, &handle_close, mlx_ptr);
     printf("Starting loop\n");

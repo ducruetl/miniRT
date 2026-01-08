@@ -1,2 +1,2 @@
 main: main.c
-	gcc -o miniRT main.c -Imlx/src -Lmlx -lmlx -Wl,-rpath=./mlx
+	gcc -o miniRT main.c shapes.c -Imlx/src -Lmlx -lmlx -lm -Wl,-rpath=./mlx
