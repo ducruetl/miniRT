@@ -1,10 +1,17 @@
 #include "mlx.h"
+#include "camera.h"
 #include "shapes.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+#define KEYCODE_Z 90
+#define KEYCODE_S 83
+#define KEYCODE_Q 81
+#define KEYCODE_D 68
+#define KEYCODE_SPACE 65408
+#define KEYCODE_SHIFT_L 65505
 #define KEYCODE_ESCAPE 65307
 
 int handle_close(unsigned int keycode, void *mlx_ptr) {
@@ -41,15 +48,23 @@ int main() {
     img.img_ptr = mlx_new_image(mlx_ptr, img.width, img.height);
     img.img_addr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-    draw_circle(&img, 30, 30, 60, color);
-    draw_circle(&img, 100, 400, 300, color);
-    draw_rectangle(&img, 50, 20, 200, 150, color);
-    draw_triangle(&img, 10, 10, 50, 10, 10, 50, color);
+    struct camera_data cam;
+    cam.x = 0;
+    cam.y = 0;
+    cam.z = -300;
+    cam.x_orientation = 0;
+    cam.y_orientation = 0;
+    cam.z_orientation = 1;
+    cam.fov = 70;
+
+    draw_sphere(&img, &cam, 500, 300, 100, 10, color);
+    draw_sphere(&img, &cam, 50, 300, -50, 10, color);
+    //draw_rectangle(&img, 50, 20, 200, 150, color);
+    //draw_triangle(&img, 200, 10, 120, 90, 300, 180, color);
 
     mlx_put_image_to_window(mlx_ptr, window, img.img_ptr, 0, 0);
 
     mlx_key_hook(window, &handle_close, mlx_ptr);
-    printf("Starting loop\n");
     mlx_loop(mlx_ptr);
     
     int code = mlx_destroy_window(mlx_ptr, window);
